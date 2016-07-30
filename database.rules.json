@@ -1,0 +1,38 @@
+{
+  "rules": {
+	  "concepts":{
+		  ".read": true,
+		  ".write": false
+	  },
+	  "markers":{
+		  ".read": true,
+		  ".write": false
+	  },
+	  "users":{
+		  "$uid":{
+			  "details":{
+				  ".read": "$uid === auth.uid",
+				  ".write": "$uid === auth.uid"
+			  },
+			  "game":{
+				  ".read": "auth.uid != null",
+				  ".write": "$uid === auth.uid",
+				  "$word":{
+					  "$concept":{
+						  ".validate": "root.child('concepts/'+$concept).exists()",
+						  "$marker":{
+							  ".validate": "newData.hasChildren(['symbol','color'])",
+							  "symbol":{
+								  ".validate":"root.child('markers/symbols/'+newData.val()).exists()"
+							  },
+							  "color":{
+								  ".validate":"root.child('markers/colors/'+newData.val()).exists()"
+							  }
+						  }
+					  }
+				  }
+			  }
+		  }
+	  }
+  }
+}
