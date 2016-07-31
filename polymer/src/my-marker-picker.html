@@ -1,0 +1,60 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+
+<dom-module id="my-marker-picker">
+
+  <template>
+
+    <style>
+    </style>
+
+	<firebase-document path="/markers" data="{{markerData}}"></firebase-document>
+	<div>
+	<paper-radio-group selected="red">
+		<template is="dom-repeat" items="{{_toArray(markerData.colors)}}" as="color">
+			<paper-radio-button name="{{color.name}}" style="border:{{color.value}};border-style:solid">{{color.name}}</paper-radio-button>
+		</template>
+	</paper-radio-group>
+	</div>
+	<div>
+	<paper-radio-group selected="main">
+		<template is="dom-repeat" items="{{_toArray(markerData.symbols)}}" as="symbol">
+			<paper-radio-button name="{{symbol.name}}">{{symbol.value}}</paper-radio-button>
+		</template>
+	</paper-radio-group>
+	</div>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'my-marker-picker',
+
+	  _toArray: function(obj) {
+		  if (!obj) return [];
+		  return Object.keys(obj).map(function(key) {
+			  return {
+				  name: key,
+				  value: obj[key]
+			  };
+		  });
+	  }
+
+    });
+
+  </script>
+
+</dom-module>

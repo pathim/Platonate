@@ -1,0 +1,146 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="my-concept-table">
+
+  <template>
+
+    <style>
+	td{
+		min-width:60px;
+		border-style:solid;
+	}
+	td.clearcol{
+		text-align:center;
+	}
+	.marker_cell{
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+    </style>
+
+	<firebase-document path="/markers/colors" data="{{colors}}"></firebase-document>
+	<firebase-document path="/concepts" data="{{concepts}}"></firebase-document>
+	<div>
+		<table id="concept_table">
+			<tr><td style="border-style:none"></td>
+				<template is="dom-repeat" items="{{_toArray(colors)}}" as="color">
+					<td class="clearcol" data-color="{{color.name}}" style="border-color:{{color.value}}" on-click="clear_markers">X</td>
+				</template>
+			</tr>
+			<template is="dom-repeat" items="{{_toArray(concepts)}}" as="concept">
+				<tr id="{{concept.name}}">
+					<td on-tap="refresh">{{concept.value.description}}</td>
+					<template is="dom-repeat" items="{{_toArray(colors)}}" as="color">
+						<td class="marker_cell" data-color="{{color.name}}" data-concept="{{concept.name}}" style="border-color:{{color.value}}" on-click="add_marker"></td>
+					</template>
+				</tr>
+			</template>
+		</table>
+	</div>
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'my-concept-table',
+
+	  properties:{
+		  markers:{
+			  type:Object,
+			  value:function(){return {};},
+			  observer: 'refresh',
+			  notify: true,
+			  reflectToAttribute: true
+		  }
+	  },
+
+	  find_cell:function(color,concept){
+		  let row=this.shadowRoot.getElementById(concept);
+		  if (!row) return null;
+		  for (cell of row.children){
+			  if (cell.dataColor===color){
+				  return cell;
+			  }
+		  }
+		  return null;
+	  },
+
+	  refresh: function(){
+		  let cells=this.shadowRoot.getElementById('concept_table').getElementsByClassName('marker_cell');
+		  for(cell of cells){
+			  cell.textContent="";
+		  }
+		  if(!this.markers){
+			  this.markers={};
+		  }
+
+		  for(color in this.markers){
+			  if(this.markers[color].main){
+				  this.find_cell(color,this.markers[color].main).textContent+='!';
+			  }
+			  if(this.markers[color].other){
+				  for(concept of this.markers[color].other){
+					  this.find_cell(color,concept).textContent+='#';
+				  }
+			  }
+		  }
+	  },
+
+	  clear_markers: function(ev){
+		  if(!this.markers){
+			  this.markers={};
+		  }
+		  this.markers[ev.currentTarget.dataColor]={other:[]};
+		  this.refresh();
+	  },
+
+	  add_marker: function(ev){
+		  if(!this.markers){
+			  this.markers={};
+		  }
+		  let m=this.markers[ev.currentTarget.dataColor]
+		  if (m===undefined){
+			  this.markers[ev.currentTarget.dataColor]={other:[]};
+			  m=this.markers[ev.currentTarget.dataColor]
+		  }
+		  if(!m.other){
+			  m.other=[];
+		  }
+		  if(!m.main){
+			  m.main=ev.currentTarget.dataConcept;
+		  }else{
+			  m.other.push(ev.currentTarget.dataConcept);
+		  }
+		  this.refresh();
+	  },
+
+	  _toArray: function(obj) {
+		  if (!obj) return [];
+		  return Object.keys(obj).map(function(key) {
+			  return {
+				  name: key,
+				  value: obj[key]
+			  };
+		  });
+	  }
+
+    });
+
+  </script>
+
+</dom-module>

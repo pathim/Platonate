@@ -1,0 +1,5 @@
+polymer/bower_components
+polymer/dist
+polymer/node_modules
+polymer/build
+*~

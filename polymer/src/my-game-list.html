@@ -1,0 +1,75 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+
+<dom-module id="my-game-list">
+
+  <template>
+
+    <style>
+	.right{
+		margin-left:auto;
+		margin-right:0px;
+	}
+    </style>
+
+	<firebase-document path="/users/{{uid}}/game" data="{{games}}"></firebase-document>
+	<div role="listbox">
+		<template is="dom-repeat" items="{{_toArray(games)}}" as="game">
+			<paper-item data-gameid="{{game.name}}" on-tap="selectGame">
+				{{game.value.word}}
+				<paper-icon-button class="right" icon="clear" on-tap="deleteGame"></paper-icon-button>
+			</paper-item>
+		</template>
+	</div>
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'my-game-list',
+
+	  properties:{
+		  uid:{
+			  type:String
+		  }
+	  },
+
+	  selectGame:function(ev){
+		  let app=document.getElementsByTagName('my-app')[0];
+		  gid=ev.currentTarget.dataGameid;
+		  app.$.edit_view.gameid=gid;
+		  app.set("route.path","view1");
+	  },
+
+	  deleteGame:function(ev){
+		  ev.stopPropagation();
+		  gid=ev.currentTarget.parentElement.dataGameid;
+		  firebase.database().ref("/users/"+this.uid+"/game/"+gid).set({}).then(function(){console.log("deleted");});
+	  },
+
+	  _toArray: function(obj) {
+		  if (!obj) return [];
+		  return Object.keys(obj).map(function(key) {
+			  return {
+				  name: key,
+				  value: obj[key]
+			  };
+		  });
+	  }
+
+    });
+
+  </script>
+
+</dom-module>
