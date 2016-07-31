@@ -24,6 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymerfire/firebase-query.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-document.html">
 <link rel="import" href="my-icons.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 
 <dom-module id="my-app">
 
@@ -72,7 +73,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		database-url="https://platonate.firebaseio.com/"
 		storage-bucket="platonate.appspot.com"
 	></firebase-app>
-	<firebase-auth id="auth" user="{{user}}" provider="google" on-error="handleError">
+		<firebase-auth id="auth" user="{{user}}" signed-in="{{signedin}}" provider="google" on-error="handleError">
 	</firebase-auth>
 
     <app-location route="{{route}}"></app-location>
@@ -86,7 +87,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <!-- Drawer content -->
       <app-drawer>
-        <app-toolbar>Menu</app-toolbar>
+		  <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="view2" href="/view2">Spielliste</a>
           <a name="view3" href="/view3">View Three</a>
@@ -100,6 +101,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <app-toolbar>
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
             <div title>Platonate</div>
+			<span id="logout" hidden="{{!signedin}}"><paper-icon-button icon="exit-to-app" on-tap="doLogout"></paper-icon-button></span>
+			<span id="login" hidden="{{signedin}}"><paper-icon-button icon="account-box" on-tap="doLogin"></paper-icon-button></span>
           </app-toolbar>
         </app-header>
 
@@ -146,7 +149,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // load page import on demand.
         this.importHref(
           this.resolveUrl('my-' + page + '.html'), null, null, true);
-      }
+      },
+
+	  doLogin:function(ev){
+		  this.$.auth.signInWithPopup();
+	  },
+
+	  doLogout:function(ev){
+		  this.$.auth.signOut();
+	  },
 
     });
 
