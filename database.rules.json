@@ -18,6 +18,11 @@
 				  ".read": "auth.uid != null",
 				  ".write": "$uid === auth.uid",
 				  "$game":{
+					  "guesses":{
+						  "$guess_uid":{
+							  ".write": "$guess_uid === auth.uid"
+						  }
+					  },
 					  "word":{
 						  ".validate": "newData.isString()"
 					  },
