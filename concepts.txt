@@ -1,0 +1,118 @@
+Objekt Verpackung Karton
+Familie Gesellschaft Gruppe
+Frau Weiblich
+Mann Männlich
+Arbeit Handwerk
+Erholung Sport Aktivität
+Tierwelt Tier
+Pflanzenwelt Pflanze
+Literatur Schrift Buch
+Musik Lied Note
+Theater Film Kamera
+Kunst Bildhauerei/Malerei Zeichnen/Comics
+Fernsehen Rundfunk Serien
+Titel Marke
+Idee Gedanke Konzept
+Ausdruck/Zitat Sprechen Wort
+Ort Land Flagge
+Gebäude Bauwerk Stadt
+Datum Ereignis Tag
+Ferien Geburtstag Feiertag
+Wasserfahrzeug Meer Schwimmen
+Luftfahrtzeug Fluglinie Fliegen
+Landfahrzeug Auto Fahren
+Werkzeuge
+Spiele Spielzeug
+Kleidung Accessoires Kostüm
+Essen Lebensmittel Essbares
+Zuhause Innenausstattung Häusliches
+Wirklichkeit Geschichte
+Dichtung Imaginär
+Baby/Kind Jung Neu
+Erwachsen/Alt Antik Vergangenheit
+Langsam Schildkröte
+Schnell Lebhaft Hase
+Verteidigung Schutz Mauer
+Konflikt Waffen Kampf
+Leben Herz Liebe
+Tod Böse Krankheit
+Fröhlich Positiv
+Traurig Negativ
+Elektronik Computer
+Mechanik
+Geld Reich Teuer
+Zeit Dauer
+Religion Mystik Glaube
+Macht Politik
+Wissenschaft Mathematik Chemie
+Medizin Medikamente Heilung
+Kopf Gesicht
+Arm Hand
+Körper Bauch
+Bein Fuß
+Ohr Klang Hören
+Nase Duft Geruch
+Auge Blick Schauen
+Mund Geschmack Essen
+Wolke Regen Schnee/Kalt
+Blitz/Elektrizität Sturm Wut
+Nacht Abend Mond
+Sonne Licht Tageszeit
+Feuer Brennen
+Wasser Flüssigkeit Nass
+Luft Wind Blasen
+Erde
+Stein Mineralien Hart
+Holz
+Metall
+Stoff
+Plastik Gummi
+Papier Blass
+Gegensätzlich Gegenteil Invers
+Schneiden Getrennt Halb
+Bruchstück Menge Pulver
+Teil_von Untermenge_von Stück_von
+Innenseite Innen
+Raster Netzwerk Gefängnis
+Null Nichts Nullpunkt
+Einheit Eins
+Gerade Glatt
+Kurve Bogen Rund
+Kreuz Kreuzung
+Gezackte_Linie Scharf Rau
+Spirale Rausch/Wahnsinn Locke
+Sinusförmig Wellig Haar/Fluss
+Ring
+Kreis
+Dreieck
+Stern
+Rechteck Viereck
+Flach
+Würfel Backstein
+Kugel
+Pyramide
+Zylinder
+Kegel
+Aussparung Loch Durchbohrt
+Groß Größer Hoch
+Klein Tiefer Unten
+Riesig Breit Länger
+Schmal Nah Eng
+Spitze Nach_Oben Aufsteigen
+Tieg Runter Fallen
+Links Erster Vor
+Rechts Ende Nach
+Drehung Drumherum Kreis
+Benutzen/Aktivieren Machen/Handeln
+Rot
+Orange
+Gelb
+Grün
+Blau
+Lila
+Rosa
+Braun
+Schwarz
+Grau
+Weiß
+Klar Unsichtbar Glas
