@@ -81,8 +81,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		  ref.push().set({word:"NewEntry"}).then(function(s){console.log(s);});
 	  },
 	  isOther:function(item){
-		  console.log( item.name!=this.uid);
-		  console.log(item.value.details.nickname);
 		  return item.name!=this.uid;
 	  },
 	  _toArray: function(obj) {

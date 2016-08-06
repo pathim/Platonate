@@ -46,10 +46,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 16px 0;
         color: #212121;
       }
+	  .correct {
+		  background: lightgreen;
+	  }
+	  .wrong {
+		  background: salmon;
+	  }
     </style>
 
 	<firebase-document path="/users/{{gameuid}}/game/{{gameid}}" data="{{game}}"></firebase-document>
     <div class="card">
+		<paper-input value="{{newguess}}" label="Geratener Begriff"></paper-input>
+		<paper-button on-tap="addGuess">Raten</paper-button>
+		<div role="listbox" id="guesslist">
+			<template is="dom-repeat" items="{{guessArray(game)}}" as="guess">
+				<paper-item class$="{{guessClass(guess)}}">
+					{{guess.value}}
+				</paper-item>
+			</template>
+		</div>
 		<div><my-concept-table id="conceptTable" markers="{{game.markers}}" readonly></my-concept-table></div>
     </div>
 
@@ -83,9 +98,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		  }
 	  },
 
-	  doSave:function(ev){
-		  ref=firebase.app().database().ref("/users/"+this.uid+"/game/"+this.gameid);
-		  ref.set(this.game).then(function(){console.log("success");});
+	  _toArray: function(obj) {
+		  if (!obj) return [];
+		  return Object.keys(obj).map(function(key) {
+			  return {
+				  name: key,
+				  value: obj[key]
+			  };
+		  });
+	  },
+
+	  guessClass:function(g){
+		  return g.value===this.game.word?"correct":"wrong";
+	  },
+
+	  addGuess:function(ev){
+		  ref=firebase.app().database().ref("/users/"+this.gameuid+"/game/"+this.gameid+"/guesses/"+this.uid);
+		  ref.push().set(this.newguess).then(function(){console.log("Guess saved");});
+	  },
+
+	  guessArray:function(game){
+		  if(!game.guesses) return [];
+		  if(!game.guesses[this.uid]) return [];
+		  return this._toArray(game.guesses[this.uid]);
 	  }
 
     });
