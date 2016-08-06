@@ -52,7 +52,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="card">
 		<div><paper-input label="Erklärter Begriff" value="{{game.word}}"></paper-input></div>
 		<div><paper-button on-tap="doSave">Speichern</paper-button></div>
-		<div><my-concept-table id="conceptTable" markers="{{game.markers}}"></my-concept-table></div>
+		<div><my-concept-table id="conceptTable" markers="{{game.markers}}" showall></my-concept-table></div>
     </div>
 
   </template>
@@ -72,6 +72,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		  },
 		  game:{
 			  type:Object,
+		  }
+	  },
+
+	  ready:function(){
+		  if (!this.gameid){
+			  let app=document.getElementsByTagName('my-app')[0];
+			  app.set("route.path","view2");
 		  }
 	  },
 

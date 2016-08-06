@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="my-game-list.html">
+<link rel="import" href="my-game-list-other.html">
 
 <dom-module id="my-view2">
 
@@ -49,9 +50,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="card">
+		<h1>Eigene Begriffe</h1>
 		<my-game-list uid="{{uid}}"></my-game-list>
 		<paper-fab icon="add" on-tap="addGame"></paper-fab>
     </div>
+	<h1>Andere Personen</h1>
+	<firebase-document path="/users" data="{{users}}"></firebase-document>
+	<template is="dom-repeat" items="{{_toArray(users)}}" as="user" filter="isOther">
+		<div class="card">
+			<h2>{{user.value.details.nickname}}</h2>
+			<my-game-list-other uid="{{user.name}}"></my-game-list-other>
+		</div>
+	</template>
 
   </template>
 
@@ -69,6 +79,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		  console.log("save");
 		  ref=firebase.app().database().ref("/users/"+this.uid+"/game/");
 		  ref.push().set({word:"NewEntry"}).then(function(s){console.log(s);});
+	  },
+	  isOther:function(item){
+		  console.log( item.name!=this.uid);
+		  console.log(item.value.details.nickname);
+		  return item.name!=this.uid;
+	  },
+	  _toArray: function(obj) {
+		  if (!obj) return [];
+		  return Object.keys(obj).map(function(key) {
+			  return {
+				  name: key,
+				  value: obj[key]
+			  };
+		  });
 	  }
 
     });

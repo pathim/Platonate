@@ -10,10 +10,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="my-concept-table.html">
 
-<dom-module id="my-view3">
+<dom-module id="my-profile">
 
   <template>
 
@@ -30,27 +28,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background-color: #fff;
         color: #757575;
       }
-      .circle {
-        display: inline-block;
-        height: 64px;
-        width: 64px;
-        border-radius: 50%;
-        background: #ddd;
-        line-height: 64px;
-        font-size: 30px;
-        color: #555;
-        text-align: center;
-      }
-      h1 {
-        font-size: 22px;
-        margin: 16px 0;
-        color: #212121;
-      }
     </style>
 
-	<firebase-document path="/users/{{gameuid}}/game/{{gameid}}" data="{{game}}"></firebase-document>
+	<firebase-document path="/users/{{uid}}/details/nickname" data="{{nickname}}"></firebase-document>
     <div class="card">
-		<div><my-concept-table id="conceptTable" markers="{{game.markers}}" readonly></my-concept-table></div>
+		<h1 on-tap="debug">Profil</h1>
+		<paper-input label="Name" value="{{nickname}}"></paper-input>
     </div>
 
   </template>
@@ -59,33 +42,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     Polymer({
 
-      is: 'my-view3',
+      is: 'my-profile',
 	  properties:{
-		  gameid:{
-			  type: String,
-			  notify: true,
-		  },
 		  uid:{
 			  type:String
 		  },
-		  gameuid:{
-			  type:String
-		  },
-		  game:{
-			  type:Object,
+		  nickname:{
+			  type:String,
+			  notify:true
 		  }
 	  },
-
-	  ready:function(){
-		  if (!this.gameid){
-			  let app=document.getElementsByTagName('my-app')[0];
-			  app.set("route.path","view2");
-		  }
-	  },
-
-	  doSave:function(ev){
-		  ref=firebase.app().database().ref("/users/"+this.uid+"/game/"+this.gameid);
-		  ref.set(this.game).then(function(){console.log("success");});
+	  debug:function(ev){
+		  console.log('debug');
 	  }
 
     });

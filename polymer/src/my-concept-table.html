@@ -70,8 +70,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		  },
 		  showall:{
 			  type:Boolean,
-			  value:true,
+			  value:false,
 			  observer: 'refresh',
+		  },
+		  readonly:{
+			  type:Boolean,
+			  value:false
 		  }
 	  },
 
@@ -140,6 +144,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	  },
 
 	  clear_markers: function(ev){
+		  if(this.readonly) return;
 		  if(!this.markers){
 			  this.markers={};
 		  }
@@ -148,6 +153,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	  },
 
 	  add_marker: function(ev){
+		  if(this.readonly) return;
 		  if(!this.markers){
 			  this.markers={};
 		  }
