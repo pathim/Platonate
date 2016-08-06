@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
 
 <dom-module id="my-concept-table">
 
@@ -36,12 +37,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	<firebase-document path="/concepts" data="{{concepts}}"></firebase-document>
 	<div>
 		<table id="concept_table">
-			<tr><td style="border-style:none"></td>
+			<tr><td style="border-style:none"><paper-toggle-button checked="{{showall}}">Alle</paper-toggle-button></td>
 				<template is="dom-repeat" items="{{_toArray(colors)}}" as="color">
 					<td class="clearcol" data-color="{{color.name}}" style="border-color:{{color.value}}" on-click="clear_markers">X</td>
 				</template>
 			</tr>
-			<template is="dom-repeat" items="{{_toArray(concepts)}}" as="concept">
+			<template id="templateList" is="dom-repeat" items="{{_toArray(concepts)}}" as="concept">
 				<tr id="{{concept.name}}">
 					<td on-tap="refresh">{{concept.value.description}}</td>
 					<template is="dom-repeat" items="{{_toArray(colors)}}" as="color">
@@ -66,6 +67,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			  observer: 'refresh',
 			  notify: true,
 			  reflectToAttribute: true
+		  },
+		  showall:{
+			  type:Boolean,
+			  value:true,
+			  observer: 'refresh',
 		  }
 	  },
 
@@ -80,23 +86,55 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		  return null;
 	  },
 
-	  refresh: function(){
-		  let cells=this.shadowRoot.getElementById('concept_table').getElementsByClassName('marker_cell');
+	  refresh: function(s){
+		  if (s && s.$){
+			  self=s;
+		  }else{
+			  self=this;
+		  }
+		  if (!self.colors || !self.concepts){
+			  setTimeout(self.refresh,100,self);
+			  return;
+		  }
+		  self.$.templateList.render();
+		  let cells=self.shadowRoot.getElementById('concept_table').getElementsByClassName('marker_cell');
 		  for(cell of cells){
 			  cell.textContent="";
 		  }
-		  if(!this.markers){
-			  this.markers={};
+		  if(!self.markers){
+			  self.markers={};
 		  }
 
-		  for(color in this.markers){
-			  if(this.markers[color].main){
-				  this.find_cell(color,this.markers[color].main).textContent+='!';
-			  }
-			  if(this.markers[color].other){
-				  for(concept of this.markers[color].other){
-					  this.find_cell(color,concept).textContent+='#';
+		  let activeConcepts={};
+		  for(color in self.markers){
+			  if(self.markers[color].main){
+				  activeConcepts[self.markers[color].main]=true;
+				  let c=self.find_cell(color,self.markers[color].main);
+				  if(!c){
+					  setTimeout(self.refresh,100,self);
+					  return;
 				  }
+				  c.textContent+='!';
+			  }
+			  if(self.markers[color].other){
+				  for(concept of self.markers[color].other){
+					  activeConcepts[concept]=true;
+					  self.find_cell(color,concept).textContent+='#';
+				  }
+			  }
+		  }
+		  let hide=true
+		  if (self.showall){
+			  hide=false;
+		  }
+
+		  let rows=self.shadowRoot.getElementById('concept_table').children[0].children;
+		  for (row of rows){
+			  if(!row.id) continue;
+			  if(activeConcepts[row.id]){
+				  row.hidden=false;
+			  }else{
+				  row.hidden=hide;
 			  }
 		  }
 	  },
