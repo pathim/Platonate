@@ -9,6 +9,7 @@
 		  ".write": false
 	  },
 	  "users":{
+		  ".read": "auth.uid != null",
 		  "$uid":{
 			  "details":{
 				  ".read": "auth.uid != null",
