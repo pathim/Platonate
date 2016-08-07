@@ -43,7 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				</template>
 			</tr>
 			<template id="templateList" is="dom-repeat" items="{{_toArray(concepts)}}" as="concept">
-				<tr id="{{concept.name}}">
+				<tr id="c{{concept.name}}">
 					<td on-tap="refresh">{{concept.value.description}}</td>
 					<template is="dom-repeat" items="{{_toArray(colors)}}" as="color">
 						<td class="marker_cell" data-color="{{color.name}}" data-concept="{{concept.name}}" style="border-color:{{color.value}}" on-click="add_marker"></td>
@@ -80,7 +80,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	  },
 
 	  find_cell:function(color,concept){
-		  let row=this.shadowRoot.getElementById(concept);
+		  let row=this.$$("#c"+concept);
 		  if (!row) return null;
 		  for (cell of row.children){
 			  if (cell.dataColor===color){
@@ -101,7 +101,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			  return;
 		  }
 		  self.$.templateList.render();
-		  let cells=self.shadowRoot.getElementById('concept_table').getElementsByClassName('marker_cell');
+		  let cells=self.$.concept_table.getElementsByClassName('marker_cell');
 		  for(cell of cells){
 			  cell.textContent="";
 		  }
@@ -112,7 +112,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		  let activeConcepts={};
 		  for(color in self.markers){
 			  if(self.markers[color].main){
-				  activeConcepts[self.markers[color].main]=true;
+				  activeConcepts['c'+self.markers[color].main]=true;
 				  let c=self.find_cell(color,self.markers[color].main);
 				  if(!c){
 					  setTimeout(self.refresh,100,self);
@@ -122,7 +122,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			  }
 			  if(self.markers[color].other){
 				  for(concept of self.markers[color].other){
-					  activeConcepts[concept]=true;
+					  activeConcepts['c'+concept]=true;
 					  self.find_cell(color,concept).textContent+='#';
 				  }
 			  }
@@ -132,7 +132,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			  hide=false;
 		  }
 
-		  let rows=self.shadowRoot.getElementById('concept_table').children[0].children;
+		  let rows=self.$.concept_table.children[0].children;
 		  for (row of rows){
 			  if(!row.id) continue;
 			  if(activeConcepts[row.id]){
